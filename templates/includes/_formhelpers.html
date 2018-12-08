@@ -1,0 +1,11 @@
+{% macro render_field(field) %}
+<dt>{{ field.label }}</dt>
+<dd>{{ field(**kwargs)|safe }}</dd>
+<small class="form-text text-muted">{{ field.description }}</small> {% if
+field.errors %}
+<ul class="errors">
+  {% for error in field.errors %}
+  <li>{{ error }}</li>
+  {% endfor %}
+</ul>
+{% endif %} {% endmacro %}

@@ -1,0 +1,62 @@
+{% extends 'layout.html' %} {% block body %}
+<div class="text-center mt-3"><h1>List Absen</h1></div>
+<div class="card p-4">
+  <a
+    href="/download-csv"
+    target="_blank"
+    class="align-self-end display-inline mb-2 btn btn-primary btn-sm"
+  >
+    Export to CSV
+  </a>
+  <script>
+    function exportData() {
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', '/download-csv');
+      xhr.send();
+    }
+  </script>
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>NPK</th>
+          <th>Nama</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if listAbsen is defined and listAbsen|length > 0 %} {% for data in
+        listAbsen %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ data[0] }}</td>
+          <td>{{ data[1] }}</td>
+          <td>
+            <script>
+              function deleteData(npk) {
+                xhr = new XMLHttpRequest();
+                xhr.addEventListener('load', () => {
+                  console.log(xhr.response);
+                  window.location.reload();
+                });
+                xhr.open('GET', `/delete-absen?npk=${npk}`);
+                xhr.send();
+              }
+            </script>
+            <button class="btn btn-primary" onclick="deleteData('{{data[0]}}')">
+              Delete
+            </button>
+          </td>
+        </tr>
+        {% endfor %} {% else %}
+        <td colspan="4">
+          <h3 class="text-center p-2">Belum ada yang absen</h3>
+        </td>
+
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  {% endblock %}
+</div>
